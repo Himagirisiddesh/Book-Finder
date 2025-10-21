@@ -34,5 +34,3 @@ Screenshots
 
 
 
-**Candidate ID:** Naukri0925  
-**Author:** Himagiri Siddesh M
