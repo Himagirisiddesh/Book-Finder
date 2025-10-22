@@ -1,0 +1,44 @@
+const searchBtn = document.getElementById('search-btn');
+const searchInput = document.getElementById('search-input');
+const resultsDiv = document.getElementById('results');
+
+searchBtn.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    if(query === "") {
+        alert("Please enter a search term.");
+        return;
+    }
+    resultsDiv.innerHTML = "<p>Loading...</p>";
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            displayBooks(data.items);
+        })
+        .catch(error => {
+            resultsDiv.innerHTML = "<p>Error fetching data.</p>";
+            console.error(error);
+        });
+});
+
+function displayBooks(books) {
+    resultsDiv.innerHTML = "";
+    if(!books || books.length === 0) {
+        resultsDiv.innerHTML = "<p>No books found.</p>";
+        return;
+    }
+    books.forEach(book => {
+        const div = document.createElement('div');
+        div.classList.add('book-card');
+        const title = book.volumeInfo.title || "No title";
+        const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(", ") : "Unknown author";
+        const thumbnail = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : "";
+        const description = book.volumeInfo.description || "No description available.";
+        div.innerHTML = `
+            ${thumbnail ? `<img src="${thumbnail}" alt="${title}">` : ""}
+            <h3>${title}</h3>
+            <p><strong>Author:</strong> ${authors}</p>
+            <p>${description.substring(0, 100)}...</p>
+        `;
+        resultsDiv.appendChild(div);
+    });
+}
