@@ -1,36 +1,83 @@
- Book Finder
+📚 Book Finder Web App
 
-A simple web application to search for books by title or author using the **Google Books API**.  
-Built with **HTML**, **CSS**, and **JavaScript**, it displays book titles, authors, covers, and short descriptions.
+An advanced and beautifully designed **Book Finder Web Application** that allows users to search millions of books instantly using the Google Books API.
 
-Features
+✨ Features
 
-- Search for books by title or author
-- Display book title, author(s), cover image, and a short description
-- Responsive design for desktop and mobile
-- Clean and user-friendly interface
+🔍 Search books by **title, author, or keywords**
+📖 View detailed book info:
 
-Technologies Used
+  * Title, Authors, Publisher
+  * Description, Categories
+  * Page count & Language
+* 🛒 Direct **Buy / View links**
+* ⚡ Fast & responsive UI with smooth animations
+* 🎨 Modern glassmorphism design
+* 💡 Smart suggestions (Atomic Habits, Sapiens, etc.)
 
-- HTML5
-- CSS3
-- JavaScript (ES6)
-- Google Books API
+🛠️ Tech Stack
 
-How to Run
+* Frontend: HTML, CSS, JavaScript
+* Backend: Node.js (custom HTTP server)
+* API: Google Books API
 
-1. Clone the repository or download the files.
-2. Open `index.html` in a web browser.
-3. Enter a book title or author in the search box and click **Search**.
-4. Results will display below with book covers, authors, and short descriptions.
+📂 Project Structure
 
-Deployment
 
-This project can be deployed on **CodeSandbox**, **GitHub Pages**, or **any static hosting service**.
+book-finder/
+│── index.html
+│── style.css
+│── script.js
+│── server.js
+│── package.json
+│── start_server.bat
 
-Screenshots
 
-![image alt](https://github.com/Himagirisiddesh/Book-Finder/blob/main/Screenshot%202025-09-01%20172011.png?raw=true)
+⚙️ How to Run Locally
+
+1. Clone the repository:
+git clone https://github.com/your-username/book-finder.git
+cd book-finder
+
+2. Install dependencies (if needed):
+npm install
+
+3. Start the server:
+npm start
+
+4. Open in browser:
+http://127.0.0.1:8000
+
+
+📸 Preview
+
+* Search books instantly
+* Click on any book to view full details in a modal
+* Smooth animations and interactive UI
+
+🌐 API Used
+
+* Google Books API
+
+🚀 Future Improvements
+
+* Add user login system
+* Save favorite books
+* Dark/Light mode toggle
+* Pagination for more results
+* Deploy on Vercel / Render
+
+👨‍💻 Author
+
+Himagiri Siddesh M
+
+* Passionate about AI, Web Development & Innovative Projects
+* Built with ❤️ to explore modern UI & API integration
+
+
+
+⭐ If you like this project, give it a star!
+
 
 
 
