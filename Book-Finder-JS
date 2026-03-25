@@ -36,7 +36,321 @@ function displayBooks(books) {
         div.innerHTML = `
             ${thumbnail ? `<img src="${thumbnail}" alt="${title}">` : ""}
             <h3>${title}</h3>
-            <p><strong>Author:</strong> ${authors}</p>
+            <p><strong>Author:</strong> ${const searchBtn = document.getElementById('search-btn');
+const searchInput = document.getElementById('search-input');
+const resultsDiv = document.getElementById('results');
+const resultsStatus = document.getElementById('results-status');
+const suggestions = document.querySelectorAll('.suggestion');
+
+const bookModal = document.getElementById('book-modal');
+const modalClose = document.getElementById('close-modal');
+const modalBackdrop = document.querySelector('[data-close-modal]');
+const modalCover = document.getElementById('modal-cover');
+const modalTitle = document.getElementById('modal-title');
+const modalAuthors = document.getElementById('modal-authors');
+const modalPublisher = document.getElementById('modal-publisher');
+const modalDescription = document.getElementById('modal-description');
+const modalCategories = document.getElementById('modal-categories');
+const modalPages = document.getElementById('modal-pages');
+const modalLanguage = document.getElementById('modal-language');
+const modalSale = document.getElementById('modal-sale');
+const modalSource = document.getElementById('modal-source');
+const modalSourceLink = document.getElementById('modal-source-link');
+const modalBuyLink = document.getElementById('modal-buy-link');
+const languageNames = typeof Intl !== 'undefined' && Intl.DisplayNames
+    ? new Intl.DisplayNames(['en'], { type: 'language' })
+    : null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (searchBtn) {
+        searchBtn.addEventListener('click', searchBooks);
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                searchBooks();
+            }
+        });
+
+        searchInput.removeAttribute('readonly');
+        searchInput.removeAttribute('disabled');
+    }
+
+    suggestions.forEach((button) => {
+        button.addEventListener('click', () => {
+            if (!searchInput) return;
+            searchInput.value = button.dataset.query || '';
+            searchBooks();
+        });
+    });
+
+    if (modalClose) {
+        modalClose.addEventListener('click', closeBookModal);
+    }
+
+    if (modalBackdrop) {
+        modalBackdrop.addEventListener('click', closeBookModal);
+    }
+
+    if (bookModal) {
+        bookModal.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeBookModal();
+            }
+        });
+    }
+});
+
+document.addEventListener('keydown', (event) => {
+    if (bookModal && event.key === 'Escape' && !bookModal.classList.contains('hidden')) {
+        closeBookModal();
+    }
+});
+
+async function searchBooks() {
+    if (!searchInput || !resultsDiv || !resultsStatus) return;
+
+    const query = searchInput.value.trim();
+
+    if (!query) {
+        resultsStatus.textContent = 'Please enter a book title or author.';
+        renderMessage('No search entered.', 'Type a title, author, or topic to see books here.');
+        searchInput.focus();
+        return;
+    }
+
+    resultsStatus.textContent = `Searching for "${query}"...`;
+    resultsDiv.innerHTML = createSkeletons(6);
+
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=18&printType=books`;
+
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        const books = Array.isArray(data.items) ? data.items : [];
+        displayBooks(books, query);
+    } catch (error) {
+        resultsStatus.textContent = 'Search failed.';
+        renderMessage('Unable to load books.', 'Check your internet connection and try again.');
+        console.error(error);
+    }
+}
+
+function displayBooks(books, query) {
+    if (!resultsDiv || !resultsStatus) return;
+
+    resultsDiv.innerHTML = '';
+
+    if (!books.length) {
+        resultsStatus.textContent = `No matches for "${query}".`;
+        renderMessage('No books found.', 'Try another title, author, or broader keyword.');
+        return;
+    }
+
+    resultsStatus.textContent = `${books.length} books found for "${query}".`;
+
+    books.forEach((book, index) => {
+        const info = book.volumeInfo || {};
+        const thumbnail = getBookImage(info);
+        const title = info.title || 'Untitled book';
+        const authors = Array.isArray(info.authors) ? info.authors.join(', ') : 'Unknown author';
+        const description = stripHtml(info.description || 'No description available.');
+        const categories = Array.isArray(info.categories) ? info.categories.join(', ') : 'General';
+
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'book-card';
+        card.style.animationDelay = `${index * 70}ms`;
+        card.innerHTML = `
+            <div class="cover-wrap">
+                ${thumbnail ? `<img src="${sanitizeImageUrl(thumbnail)}" alt="${escapeHtml(title)} cover">` : '<div class="cover-missing">No image</div>'}
+            </div>
+            <h3>${escapeHtml(title)}</h3>
+            <p class="author">By ${escapeHtml(authors)}</p>
+            <p class="description">${escapeHtml(truncateText(description, 130))}</p>
+            <p class="meta">${escapeHtml(categories)}</p>
+        `;
+
+        card.addEventListener('click', () => {
+            card.classList.add('card-click-animate');
+            setTimeout(() => card.classList.remove('card-click-animate'), 400);
+            openBookModal(book);
+        });
+
+        resultsDiv.appendChild(card);
+    });
+}
+
+function openBookModal(book) {
+    if (
+        !bookModal || !modalTitle || !modalAuthors || !modalPublisher || !modalDescription ||
+        !modalCategories || !modalPages || !modalLanguage || !modalSale ||
+        !modalSource || !modalSourceLink || !modalBuyLink || !modalCover || !modalClose
+    ) {
+        return;
+    }
+
+    const info = book.volumeInfo || {};
+    const sale = book.saleInfo || {};
+    const thumbnail = getBookImage(info);
+    const authors = Array.isArray(info.authors) ? info.authors.join(', ') : 'Unknown author';
+    const categories = Array.isArray(info.categories) ? info.categories.join(', ') : 'General';
+    const publisher = info.publisher || 'Publisher unknown';
+    const publishedDate = info.publishedDate || 'Date unknown';
+    const pages = info.pageCount ? `${info.pageCount} pages` : 'Page count unavailable';
+    const language = info.language || '';
+    const saleText = getSaleText(sale);
+    const infoLink = info.infoLink || '#';
+    const buyLink = sale.buyLink || info.canonicalVolumeLink || info.infoLink || '#';
+
+    modalTitle.textContent = info.title || 'Unknown Title';
+    modalAuthors.textContent = `Author: ${authors}`;
+    modalPublisher.textContent = `${publisher} | ${publishedDate}`;
+    modalDescription.textContent = stripHtml(info.description || 'No description available for this book.');
+    modalCategories.textContent = categories;
+    modalPages.textContent = pages;
+    modalLanguage.textContent = `Language: ${getLanguageName(language)}`;
+    modalSale.textContent = saleText;
+    modalSource.textContent = `Source: Google Books`;
+
+    modalSourceLink.href = infoLink;
+    modalSourceLink.classList.toggle('disabled', infoLink === '#');
+
+    modalBuyLink.href = buyLink;
+    modalBuyLink.textContent = sale.buyLink ? 'Buy this book' : 'Open book page';
+    modalBuyLink.classList.toggle('disabled', buyLink === '#');
+
+    modalCover.innerHTML = thumbnail
+        ? `<img src="${sanitizeImageUrl(thumbnail)}" alt="${escapeHtml(info.title || 'Book')} cover">`
+        : '<div class="cover-missing">No cover available</div>';
+
+    bookModal.classList.remove('hidden');
+    bookModal.setAttribute('aria-hidden', 'false');
+    modalClose.focus();
+}
+
+function closeBookModal() {
+    if (!bookModal) return;
+
+    bookModal.classList.add('hidden');
+    bookModal.setAttribute('aria-hidden', 'true');
+}
+
+function getSaleText(sale) {
+    if (sale.saleability === 'FOR_SALE' && sale.listPrice) {
+        return `Price: ${sale.listPrice.amount} ${sale.listPrice.currencyCode}`;
+    }
+
+    if (sale.saleability === 'FREE') {
+        return 'Available for free';
+    }
+
+    if (sale.saleability === 'NOT_FOR_SALE') {
+        return 'Not for sale right now';
+    }
+
+    return 'Price not available';
+}
+
+function getLanguageName(code) {
+    const normalized = String(code || '').trim().replace(/_/g, '-').toLowerCase();
+
+    if (!normalized) {
+        return 'Unknown';
+    }
+
+    const baseCode = normalized.split('-')[0];
+
+    if (languageNames) {
+        try {
+            const name = languageNames.of(baseCode);
+            if (name) return name;
+        } catch (error) {
+            // Ignore and fall back to the local map below.
+        }
+    }
+
+    const fallbackNames = {
+        ar: 'Arabic',
+        de: 'German',
+        en: 'English',
+        es: 'Spanish',
+        fr: 'French',
+        hi: 'Hindi',
+        it: 'Italian',
+        ja: 'Japanese',
+        ko: 'Korean',
+        ml: 'Malayalam',
+        mr: 'Marathi',
+        pt: 'Portuguese',
+        ru: 'Russian',
+        ta: 'Tamil',
+        te: 'Telugu',
+        zh: 'Chinese'
+    };
+
+    return fallbackNames[baseCode] || baseCode.toUpperCase();
+}
+
+function renderMessage(title, body) {
+    if (!resultsDiv) return;
+
+    resultsDiv.innerHTML = `
+        <div class="message-card">
+            <strong>${escapeHtml(title)}</strong>
+            <span>${escapeHtml(body)}</span>
+        </div>
+    `;
+}
+
+function createSkeletons(count) {
+    return Array.from({ length: count }, () => '<div class="skeleton-card"></div>').join('');
+}
+
+function sanitizeImageUrl(url) {
+    if (!url) return '';
+    const httpsUrl = url.replace('http://', 'https://');
+    return httpsUrl
+        .replace(/zoom=\d+/i, 'zoom=3')
+        .replace(/&edge=curl/gi, '')
+        .replace(/&source=gbs_api/gi, '');
+}
+
+function getBookImage(info) {
+    const imageLinks = info.imageLinks || {};
+    return imageLinks.extraLarge ||
+        imageLinks.large ||
+        imageLinks.medium ||
+        imageLinks.thumbnail ||
+        imageLinks.smallThumbnail ||
+        '';
+}
+
+function stripHtml(value) {
+    const text = value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    return text || 'No description available.';
+}
+
+function truncateText(value, maxLength) {
+    if (value.length <= maxLength) return value;
+    return `${value.slice(0, maxLength).trim()}...`;
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+authors}</p>
             <p>${description.substring(0, 100)}...</p>
         `;
         resultsDiv.appendChild(div);
