@@ -29,10 +29,15 @@ An advanced and beautifully designed **Book Finder Web Application** that allows
 
 book-finder/
 │── index.html
+
 │── style.css
+
 │── script.js
+
 │── server.js
+
 │── package.json
+
 │── start_server.bat
 
 
