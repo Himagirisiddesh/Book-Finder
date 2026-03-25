@@ -7,15 +7,77 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Book Finder</h1>
-        <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search books by title or author">
-            <button id="search-btn">Search</button>
+    <div class="page-shell">
+        <div class="background-animation">
+            <div class="book-cloud" style="--x:12%; --y:15%;"></div>
+            <div class="book-cloud" style="--x:76%; --y:28%;"></div>
+            <div class="book-cloud" style="--x:43%; --y:64%;"></div>
+            <div class="book-cloud" style="--x:84%; --y:72%;"></div>
         </div>
-        <div id="results" class="results"></div>
+
+        <div class="ambient ambient-one"></div>
+        <div class="ambient ambient-two"></div>
+        <div class="ambient ambient-three"></div>
+
+        <div class="container">
+            <section class="hero">
+                <p class="eyebrow">Book Finder</p>
+                <h1>Find Your Next Favorite Read</h1>
+                <p class="hero-copy">Search millions of books instantly. Click any card for full details, pricing, publisher info, and a direct buy link.</p>
+
+                <div class="search-panel">
+                    <div class="search-bar">
+                        <input id="search-input" type="text" placeholder="Search books by title, author, or theme" autocomplete="off">
+                        <button id="search-btn" type="button">Search</button>
+                    </div>
+                    <div class="search-hint">
+                        Recommended:
+                        <button class="suggestion" type="button" data-query="Atomic Habits">Atomic Habits</button>
+                        <button class="suggestion" type="button" data-query="The Alchemist">The Alchemist</button>
+                        <button class="suggestion" type="button" data-query="Sapiens">Sapiens</button>
+                        <button class="suggestion" type="button" data-query="Harry Potter">Harry Potter</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="results-section">
+                <div class="section-heading">
+                    <h2>Search Results</h2>
+                    <p id="results-status" class="results-status">Start by entering a search above.</p>
+                </div>
+
+                <div id="results" class="results"></div>
+            </section>
+        </div>
+
+        <div id="book-modal" class="book-modal hidden" role="dialog" aria-hidden="true" aria-modal="true" tabindex="-1">
+            <div class="modal-backdrop" data-close-modal></div>
+            <div class="modal-card">
+                <button id="close-modal" class="modal-close" aria-label="Close">X</button>
+                <div class="modal-grid">
+                    <div id="modal-cover" class="modal-cover"></div>
+                    <div class="modal-info">
+                        <h3 id="modal-title"></h3>
+                        <p id="modal-authors" class="subtitle"></p>
+                        <p id="modal-publisher" class="subtitle"></p>
+                        <p id="modal-description" class="modal-desc"></p>
+                        <div class="modal-meta">
+                            <span id="modal-categories" class="meta-pill"></span>
+                            <span id="modal-pages" class="meta-pill"></span>
+                            <span id="modal-language" class="meta-pill"></span>
+                            <span id="modal-sale" class="meta-pill"></span>
+                        </div>
+                        <p id="modal-source" class="modal-source"></p>
+                        <div class="modal-buttons">
+                            <a id="modal-source-link" class="btn secondary" target="_blank" rel="noopener">View on Google Books</a>
+                            <a id="modal-buy-link" class="btn" target="_blank" rel="noopener">Buy this book</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
