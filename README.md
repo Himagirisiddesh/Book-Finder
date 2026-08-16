@@ -57,19 +57,6 @@ npm start
 Then open **`http://127.0.0.1:8000`**
 
 
-
-**🏠 Home Page**
-Modern, responsive UI with a search bar and smart suggestions to quickly find books.
-
-**📖 Book Details Modal**
-An interactive popup showing full book information — description, metadata, and direct links.
-
-> Add actual screenshot files here, e.g.:
-> ```markdown
-> ![Home Page](screenshots/home.png)
-> ![Book Details Modal](screenshots/details-modal.png)
-> ```
-
 ## 🌐 API Used
 
 [Google Books API](https://developers.google.com/books)
