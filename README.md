@@ -1,92 +1,98 @@
-# 📚 Book Finder Web App
+<div align="center">
 
-An advanced and beautifully designed **Book Finder Web Application** that allows users to search millions of books instantly using the **Google Books API**.
+# 📚 Book Finder
 
+**A beautifully designed book search app that lets you explore millions of titles instantly using the Google Books API.**
 
-✨ Features
+Search by title, author, or keyword and get rich book details in a fast, glassmorphism-styled UI.
 
-* 🔍 Search books by **title, author, or keywords**
-* 📖 View detailed book information:
+[![HTML5](https://img.shields.io/badge/HTML5-structure-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-glassmorphism-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-app%20logic-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Node.js](https://img.shields.io/badge/Node.js-local%20server-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Google Books API](https://img.shields.io/badge/API-Google%20Books-4285F4?logo=googlebooks&logoColor=white)](https://developers.google.com/books)
 
-  * Title, Authors, Publisher
-  * Description, Categories
-  * Page count & Language
-* 🛒 Direct **Buy / View links**
-* ⚡ Fast & responsive UI with smooth animations
-* 🎨 Modern **glassmorphism UI design**
-* 💡 Smart suggestions (Atomic Habits, Sapiens, etc.)
+</div>
 
+---
 
+## ✨ Features
 
-🛠️ Tech Stack
+| Category | Details |
+|---|---|
+| 🔍 **Search** | Find books by title, author, or keyword |
+| 📖 **Book Details** | Title, authors, publisher, description, categories, page count, and language |
+| 🛒 **Buy / View Links** | Direct links out to purchase or view each book |
+| ⚡ **Fast UI** | Responsive layout with smooth animations |
+| 🎨 **Design** | Modern glassmorphism interface |
+| 💡 **Smart Suggestions** | Curated starting picks like *Atomic Habits* and *Sapiens* |
 
-* **Frontend:** HTML, CSS, JavaScript
-* **Backend:** Node.js (Custom HTTP Server)
-* **API:** Google Books API
+## 🧩 Tech Stack
 
-📂 Project Structure
+- **Frontend:** HTML, CSS, JavaScript
+- **Backend:** Node.js (custom HTTP server)
+- **API:** Google Books API
 
+## 📁 Project Structure
 
-book-finder/
-│── index.html
+```
+Book-Finder/
+├── Book Finder-HTML      Main HTML structure
+├── Book -Finder-CSS       Styling & animations
+├── Book-Finder-JS         Search logic & UI rendering
+├── server.js               Local Node.js server
+├── package.json            Project config
+└── start_server.bat        Windows launch script
+```
 
-│── style.css
+## ⚙️ How to Run Locally
 
-│── script.js
-
-│── server.js
-
-│── package.json
-
-│── start_server.bat
-
-
-⚙️ How to Run Locally
-
-git clone https://github.com/your-username/book-finder.git
-cd book-finder
+```bash
+git clone https://github.com/Himagirisiddesh/Book-Finder.git
+cd Book-Finder
 npm install
 npm start
+```
+
+Then open **`http://127.0.0.1:8000`**
 
 
-Then open:
-👉 http://127.0.0.1:8000
 
-📸 Screenshots
+**🏠 Home Page**
+Modern, responsive UI with a search bar and smart suggestions to quickly find books.
 
- 1.🏠 Home Page
+**📖 Book Details Modal**
+An interactive popup showing full book information — description, metadata, and direct links.
 
-Modern and responsive UI with a search bar and smart suggestions to quickly find books.
+> Add actual screenshot files here, e.g.:
+> ```markdown
+> ![Home Page](screenshots/home.png)
+> ![Book Details Modal](screenshots/details-modal.png)
+> ```
 
-<img src="https://github.com/user-attachments/assets/99aba616-a388-4214-b82c-602b32b7d62c" width="100%" />
+## 🌐 API Used
 
+[Google Books API](https://developers.google.com/books)
 
-2.📖 Book Details Modal
+## 🚀 Future Improvements
 
-Interactive popup displaying complete book information with description, metadata, and direct links.
+- 🔐 User authentication system
+- ❤️ Save favorite books
+- 🌙 Dark / light mode toggle
+- 📄 Pagination for more results
+- 🌍 Deployment (Vercel / Render)
 
-<img src="https://github.com/user-attachments/assets/82f3940b-2200-4b58-9d5d-458cbfde4c12" width="100%" />
+## 👨‍💻 Author
 
+**Himagiri Siddesh M**
+Passionate about AI, Web Development & innovative projects. Built with ❤️ to explore modern UI and API integration.
 
-🌐 API Used
+## ⭐ Support
 
-* Google Books API
+If you like this project, consider giving it a star!
 
+---
 
-🚀 Future Improvements
-
-* 🔐 User authentication system
-* ❤️ Save favorite books
-* 🌙 Dark / Light mode toggle
-* 📄 Pagination for more results
-* 🌍 Deployment (Vercel / Render)
-
-👨‍💻 Author
-
-Himagiri Siddesh M
-
-* Passionate about AI, Web Development & Innovative Projects
-* Built with ❤️ to explore modern UI & API integration
-
-
-⭐ If you like this project, consider giving it a star!
+<div align="center">
+Built with HTML, CSS, JavaScript, and the Google Books API
+</div>
